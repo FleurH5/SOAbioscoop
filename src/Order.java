@@ -71,6 +71,33 @@ public class Order {
     }
 
     public void export(TicketExportFormat exportFormat) {
+        switch (exportFormat) {
+            case PLAINTEXT:
+                System.out.println("Ordernr: " + orderNr);
+                for (MovieTicket ticket : tickets) {
+                    System.out.println(ticket);
+                }
 
+                System.out.println("Totaal: " + calculatePrice());
+                break;
+
+            // json raar
+            case JSON:
+                System.out.println("{}");
+                System.out.println("  \"orderNr\": " + orderNr + ",");
+                System.out.println("  \"tickets\": [");
+
+                for (int i = 0; i < tickets.size(); i++) {
+                    System.out.print("    \"" + tickets.get(i) + "\"");
+                    if (i < tickets.size() - 1)
+                        System.out.print(",");
+                    System.out.println();
+                }
+
+                System.out.println("  ],");
+                System.out.println("  \"total\": " + calculatePrice());
+                System.out.println("}");
+                break;
+        }
     }
 }
