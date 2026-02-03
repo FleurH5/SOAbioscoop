@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+
 
 public class Order {
     private int orderNr;
@@ -38,7 +42,7 @@ public class Order {
         for (MovieTicket ticket : tickets) {
             total += ticket.getPrice(isStudentOrder);
         }
-
+        
         // studentenkorting 2e gratis
         if (isStudentOrder) {
             int freeTickets = tickets.size() / 2;
@@ -47,9 +51,9 @@ public class Order {
                 total -= tickets.get(i).getPrice(true);
             }
         }
-
+        
         // rest vd mesnen
-        if (!tickets.isEmpty()) {
+        if (!tickets.isEmpty() && !isStudentOrder) {
             var day = tickets.get(0).getMovieScreening().getDateAndTime().getDayOfWeek();
 
             boolean weekend = (day.getValue() >= 5);
@@ -70,6 +74,8 @@ public class Order {
         return total;
     }
 
+
+
     public void export(TicketExportFormat exportFormat) {
         switch (exportFormat) {
             case PLAINTEXT:
@@ -83,20 +89,9 @@ public class Order {
 
             // json raar
             case JSON:
-                System.out.println("{}");
-                System.out.println("  \"orderNr\": " + orderNr + ",");
-                System.out.println("  \"tickets\": [");
-
-                for (int i = 0; i < tickets.size(); i++) {
-                    System.out.print("    \"" + tickets.get(i) + "\"");
-                    if (i < tickets.size() - 1)
-                        System.out.print(",");
-                    System.out.println();
-                }
-
-                System.out.println("  ],");
-                System.out.println("  \"total\": " + calculatePrice());
-                System.out.println("}");
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String json = gson.toJson(this);
+                System.out.println(json + "\ntotal:" + calculatePrice());
                 break;
         }
     }
