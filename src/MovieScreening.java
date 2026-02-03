@@ -11,11 +11,15 @@ public class MovieScreening {
     }
 
     public double getPricePerSeat() {
-        return 0;
+        return pricePerSeat;
+    }
+
+    public LocalDateTime getDateAndTime() {
+        return dateAndTime;
     }
 
     public String toString() {
-        return "";
+        return "Screening op " + dateAndTime + ". Prijs per stoel: €" + pricePerSeat;
     }
 
 }
