@@ -50,10 +50,7 @@ public class Order {
             for (int i = 0; i < freeTickets; i++) {
                 total -= tickets.get(i).getPrice(true);
             }
-        }
-        
-        // rest vd mesnen
-        if (!tickets.isEmpty() && !isStudentOrder) {
+        } else  if (!tickets.isEmpty()) {
             var day = tickets.get(0).getMovieScreening().getDateAndTime().getDayOfWeek();
 
             boolean weekend = (day.getValue() >= 5);
